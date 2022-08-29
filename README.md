@@ -7,6 +7,7 @@ image will generate a virtual environment at `/var/lib/openstack` which you
 can use in a multi-stage build:
 
 ```Dockerfile
+FROM quay.io/vexxhost/bindep-loci:latest AS bindep
 FROM quay.io/vexxhost/openstack-builder-jammy:latest AS builder
 
 FROM ubuntu:jammy AS runtime
