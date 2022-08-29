@@ -52,16 +52,9 @@ generates a file called `/runtime-pip-packages`.  You could generate that stage
 by using something like this:
 
 ```Dockerfile
-FROM quay.io/vexxhost/bindep:v2.11.0 AS bindep
-ARG LOCI_TAG=2537db07aa3a3836cd215281e2fe2aa7923706b0
-ADD https://opendev.org/openstack/loci/raw/commit/${LOCI_TAG}/bindep.txt /bindep.txt
-ADD https://opendev.org/openstack/loci/raw/commit/${LOCI_TAG}/pydep.txt /pydep.txt
-ARG PROJECT
-ARG PROFILES
-RUN bindep -f /bindep.txt -b -l newline ${PROJECT} ${PROFILES} python3 > /runtime-dist-packages
-RUN bindep -f /pydep.txt -b -l newline ${PROJECT} ${PROFILES} python3 > /runtime-pip-packages
+FROM quay.io/vexxhost/bindep-loci:latest AS bindep
 ```
 
-The example above leverages the LOCI project in order to take advantage of it's
-vast and in-depth `bindep.txt` and `pydep.txt` dependency tracking for OpenStack
-projects.
+The example above leverages the `vexxhost/bindep-loci` image in order to take
+advantage of LOCI's vast and in-depth `bindep.txt` and `pydep.txt` dependency
+tracking for OpenStack projects.
