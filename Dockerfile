@@ -63,7 +63,7 @@ ONBUILD RUN --mount=type=ssh <<EOF
 EOF
 ONBUILD ARG PIP_PACKAGES=""
 ONBUILD COPY --from=bindep --link /runtime-pip-packages /runtime-pip-packages
-ONBUILD RUN <<EOF bash -xe
+ONBUILD RUN --mount=type=cache,target=/root/.cache <<EOF bash -xe
   /var/lib/openstack/bin/pip3 install \
     --constraint /upper-constraints.txt \
     /src \
