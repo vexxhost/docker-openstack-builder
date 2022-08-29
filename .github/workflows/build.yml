@@ -24,7 +24,7 @@ jobs:
           images: |
             name=quay.io/vexxhost/openstack-builder-${{ matrix.release }}
           flavor: |
-            latest=auto
+            latest=true
           tags: |
             type=schedule,pattern={{date 'YYYYMMDD'}}
       - uses: docker/build-push-action@v3
