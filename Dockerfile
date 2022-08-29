@@ -51,7 +51,7 @@ EOF
 
 # Build the virtual environment
 ONBUILD ARG RELEASE
-ADD https://releases.openstack.org/constraints/upper/${RELEASE} /upper-constraints.txt
+ONBUILD ADD https://releases.openstack.org/constraints/upper/${RELEASE} /upper-constraints.txt
 ONBUILD ARG PROJECT
 ONBUILD RUN sed -i "/^${PROJECT}==.*/d" /upper-constraints.txt
 ONBUILD ARG PROJECT_REPO=https://opendev.org/openstack/${PROJECT}

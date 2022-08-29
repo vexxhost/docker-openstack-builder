@@ -2,7 +2,16 @@
 
 This is a simple image which use the `ONBUILD` instructions in order to be able
 to build a complete virtual environment for any OpenStack project.  It uses a
-few build arguments to tune the exact build environment.
+few build arguments to tune the exact build environment.  Once completed, the
+image will generate a virtual environment at `/var/lib/openstack` which you
+can use in a multi-stage build:
+
+```Dockerfile
+FROM quay.io/vexxhost/openstack-builder-jammy:latest AS builder
+
+FROM ubuntu:jammy AS runtime
+COPY --from=builder --link /var/lib/openstack /var/lib/openstack
+```
 
 The following images are published for all the different OpenStack releases:
 
