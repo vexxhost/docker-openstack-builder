@@ -7,11 +7,15 @@ image will generate a virtual environment at `/var/lib/openstack` which you
 can use in a multi-stage build:
 
 ```Dockerfile
-FROM quay.io/vexxhost/bindep-loci:latest AS bindep
-FROM quay.io/vexxhost/openstack-builder-jammy:latest AS builder
+# syntax=docker/dockerfile:1.4
 
-FROM ubuntu:jammy AS runtime
-COPY --from=builder --link /var/lib/openstack /var/lib/openstack
+FROM quay.io/vexxhost/bindep-loci:latest AS bindep
+
+FROM quay.io/vexxhost/openstack-builder-jammy:latest AS builder
+COPY --from=bindep /runtime-pip-packages /runtime-pip-packages
+
+FROM quay.io/vexxhost/openstack-builder-jammy:latest AS builder
+COPY --from=bindep /runtime-dist-packages /runtime-dist-packages
 ```
 
 The following images are published for all the different OpenStack releases:
@@ -46,15 +50,3 @@ as `FROM` to build the OpenStack project virtual environment.
 > It is strongly recommended to ensure that `PROJECT_REF` is a commit SHA in
 > order to make images reproducible.  Otherwise, the Docker cache will likely
 > never rebuild a new image (or unpredictable behavior will occur).
-
-In addition, there must be a `bindep` stage in the same `Dockerfile` which
-generates a file called `/runtime-pip-packages`.  You could generate that stage
-by using something like this:
-
-```Dockerfile
-FROM quay.io/vexxhost/bindep-loci:latest AS bindep
-```
-
-The example above leverages the `vexxhost/bindep-loci` image in order to take
-advantage of LOCI's vast and in-depth `bindep.txt` and `pydep.txt` dependency
-tracking for OpenStack projects.
