@@ -21,7 +21,7 @@ jobs:
       - uses: josStorer/get-current-time@v2.0.1
         id: current-time
         with:
-          format: YYYYMMDD
+          format: YYYY-MM-DD
       - uses: docker/build-push-action@v3.1.1
         with:
           context: .
