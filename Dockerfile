@@ -53,7 +53,13 @@ EOF
 RUN --mount=type=cache,target=/root/.cache <<EOF bash -xe
   mkdir -p /wheels
   cd /wheels
-  pip wheel uwsgi
+
+  # NOTE(mnaser): This is a fix for UWSGI failed builds
+  export CPUCOUNT=1
+  export UWSGI_PROFILE_OVERRIDE=ssl=true
+
+  pip wheel \
+    uwsgi
 EOF
 
 # Build the virtual environment
