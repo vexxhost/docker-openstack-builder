@@ -49,6 +49,13 @@ RUN <<EOF bash -xe
   /var/lib/openstack/bin/pip3 install -U pip wheel
 EOF
 
+# Create local wheels for faster builds
+RUN --mount=type=cache,target=/root/.cache <<EOF bash -xe
+  mkdir -p /wheels
+  cd /wheels
+  pip wheel uwsgi
+EOF
+
 # Build the virtual environment
 ONBUILD ARG RELEASE
 ONBUILD ADD https://releases.openstack.org/constraints/upper/${RELEASE} /upper-constraints.txt
