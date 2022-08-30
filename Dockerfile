@@ -13,6 +13,7 @@ RUN <<EOF bash -xe
     crudini \
     curl \
     git \
+    libssl-dev \
     lsb-release \
     openssh-client \
     python3 \
