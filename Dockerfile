@@ -75,14 +75,15 @@ ONBUILD RUN --mount=type=ssh <<EOF
   git -C /src fetch origin ${PROJECT_REF}
   git -C /src checkout FETCH_HEAD
 EOF
-ONBUILD ARG PIP_PACKAGES=""
 ONBUILD COPY --from=bindep --link /runtime-pip-packages /runtime-pip-packages
+ONBUILD ARG EXTRAS=""
+ONBUILD ARG PIP_PACKAGES=""
 ONBUILD RUN --mount=type=cache,target=/root/.cache <<EOF bash -xe
   /var/lib/openstack/bin/pip3 install \
     --only-binary :all: \
     --constraint /upper-constraints.txt \
     --find-links /wheels/ \
-    /src \
+    /src[${EXTRAS}] \
     ${PIP_PACKAGES} \
     $(cat /runtime-pip-packages | tr '\n' ' ')
 EOF
