@@ -46,7 +46,7 @@ EOF
 
 # Create virtual environment
 RUN <<EOF bash -xe
-  python3 -m venv /var/lib/openstack
+  python3 -m venv --system-site-packages /var/lib/openstack
   /var/lib/openstack/bin/pip3 install -U pip wheel
 EOF
 
